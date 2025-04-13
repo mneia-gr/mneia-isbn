@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+
+# print "PASSED" in green colour:
+PASSED() {
+    printf '\033[0;32mPASSED\033[0m\n';
+}
+
+echo -n 'flake8 '
+flake8 .                                                    && PASSED   || exit 1
+
+echo -n 'black  '
+black --quiet --check --diff .                              && PASSED   || exit 1
+
+echo -n 'isort  '
+isort --quiet --check-only --diff .                         && PASSED   || exit 1
+
+echo -n 'bandit '
+bandit --quiet --recursive . --configfile pyproject.toml    && PASSED   || exit 1
+
+echo -n 'mypy   '
+mypy --strict .                                              && PASSED   || exit 1
+
+pytest
