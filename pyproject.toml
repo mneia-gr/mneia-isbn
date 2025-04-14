@@ -53,7 +53,10 @@ test = [
     "isort",
     "bandit",
     "mypy",
+    "types-defusedxml",
 ]
+# You only need parse dependencies if you are parsing the XML file from ISBN International:
+parse = ["defusedxml"]
 
 [build-system]
 requires = ['setuptools>=75.0']
