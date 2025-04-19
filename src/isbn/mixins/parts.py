@@ -33,3 +33,9 @@ class PartsMixin:
             if int(publisher) in range(int(publisher_min), int(publisher_max) + 1):
                 return publisher
         raise ISBNError(f"Could not find the Publisher of ISBN {self.source}.")
+
+    @property
+    def article(self) -> str:
+        length_before_article = len(self.group) + len(self.publisher)
+        length_before_article = length_before_article if len(self.source) == 10 else length_before_article + 3
+        return self.source[length_before_article:-1]

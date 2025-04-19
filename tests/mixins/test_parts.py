@@ -51,3 +51,17 @@ def test_isbn_publisher_raises():
     with pytest.raises(ISBNError) as exc:
         isbn.publisher
     assert str(exc.value) == "Could not find the Publisher of ISBN 9786328004567."
+
+
+@pytest.mark.parametrize(
+    "source, article",
+    [
+        ("9789601655550", "5555"),
+        ("9781781682135", "213"),
+        ("9607073010", "01"),
+        ("960728013X", "13"),
+    ],
+)
+def test_isbn_article(source, article):
+    isbn = ISBN(source)
+    assert isbn.article == article
