@@ -32,3 +32,8 @@ def test_as_isbn10_raises():
     with pytest.raises(ISBNInvalidOperation) as exc:
         isbn.as_isbn10
     assert str(exc.value) == "Cannot convert ISBN13 that starts with 979 to ISBN10."
+
+
+def test_hyphenated():
+    isbn = ISBN("9789607073013")
+    assert isbn.hyphenated == "978-960-7073-01-3"

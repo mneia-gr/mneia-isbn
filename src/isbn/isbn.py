@@ -4,7 +4,7 @@ from isbn.exceptions import ISBNInvalidOperation, ISBNValidationError
 from isbn.mixins import DundersMixin, PartsMixin, PresentationMixin
 
 
-class ISBN(DundersMixin, PartsMixin, PresentationMixin):
+class ISBN(DundersMixin, PresentationMixin, PartsMixin):
     def __init__(self, source: str):
         self._source: str = self.clean(source)
         self._is_valid: Optional[bool] = None
@@ -28,7 +28,6 @@ class ISBN(DundersMixin, PartsMixin, PresentationMixin):
         _value = self.clean(value)
         if _value != self._source:
             self._is_valid = None
-            self._prefix = None
         self._source = _value
 
     @property

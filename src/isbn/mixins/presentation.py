@@ -8,6 +8,11 @@ class PresentationMixin:
     """
 
     source: str
+    prefix: str
+    group: str
+    publisher: str
+    article: str
+    check_digit: str
 
     @property
     def as_isbn13(self) -> str:
@@ -33,3 +38,8 @@ class PresentationMixin:
         _as_isbn10 = self.source[3:]
         _as_isbn10 = _as_isbn10[:-1] + calculate_isbn10_check_digit(_as_isbn10)
         return _as_isbn10
+
+    @property
+    def hyphenated(self) -> str:
+        _hyphenated = f"{self.group}-{self.publisher}-{self.article}-{self.check_digit}"
+        return _hyphenated if len(self.source) == 10 else f"{self.prefix}-{_hyphenated}"
