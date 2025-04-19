@@ -1,15 +1,13 @@
 from typing import Optional
 
 from isbn.exceptions import ISBNInvalidOperation, ISBNValidationError
-from isbn.mixins import DundersMixin, PartsMixin
-from isbn.utils.check_digit import calculate_isbn10_check_digit, calculate_isbn13_check_digit
+from isbn.mixins import DundersMixin, PartsMixin, PresentationMixin
 
 
-class ISBN(DundersMixin, PartsMixin):
+class ISBN(DundersMixin, PartsMixin, PresentationMixin):
     def __init__(self, source: str):
         self._source: str = self.clean(source)
         self._is_valid: Optional[bool] = None
-        self._prefix: Optional[str] = None
 
     @property
     def source(self) -> str:
@@ -32,14 +30,6 @@ class ISBN(DundersMixin, PartsMixin):
             self._is_valid = None
             self._prefix = None
         self._source = _value
-
-    @property
-    def as_isbn13(self) -> str:
-        if len(self) == 13:
-            return self.source
-        _as_isbn13 = f"978{self.source}"
-        _as_isbn13 = _as_isbn13[:-1] + calculate_isbn13_check_digit(_as_isbn13)
-        return _as_isbn13
 
     @property
     def is_valid(self) -> bool:
@@ -70,10 +60,3 @@ class ISBN(DundersMixin, PartsMixin):
             raise ISBNValidationError(
                 f"The length of {self.source} is neither 10 nor 13, got length {len(self.source)}."
             )
-
-    def calculate_check_digit(self) -> str:
-        if len(self) == 10:
-            return calculate_isbn10_check_digit(self.source)
-        if len(self) == 13:
-            return calculate_isbn13_check_digit(self.source)
-        raise ISBNInvalidOperation(f"The length of {self.source} is neither 10 nor 13, got length {len(self)}.")
