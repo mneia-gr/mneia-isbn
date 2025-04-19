@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+// Retrieves range information from ISBN International and stores it as an XML file.
 // Shamelessly copied from https://github.com/inventaire/isbn3/blob/main/scripts/update_groups.js and adapted
 
 const fs = require('fs')

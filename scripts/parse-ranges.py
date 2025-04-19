@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+# Parses the XML file retrieved from ISBN international and saves it as a Python dictionary.
+
 import sys
 import xml.etree.ElementTree  # nosec
 from pathlib import Path

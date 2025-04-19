@@ -21,3 +21,15 @@ class PartsMixin:
             if rest_after_prefix.startswith(group):
                 return group
         raise ISBNError(f"Could not find the Group of ISBN {self.source}.")
+
+    @property
+    def publisher(self) -> str:
+        length_before_publisher = len(self.group) if len(self.source) == 10 else len(self.group) + 3
+        rest_after_group = self.source[length_before_publisher:]
+        publisher_ranges = RANGES[self.prefix][self.group]["ranges"]
+        for publisher_range in publisher_ranges:
+            publisher_min, publisher_max = publisher_range
+            publisher = rest_after_group[: len(publisher_min)]
+            if int(publisher) in range(int(publisher_min), int(publisher_max) + 1):
+                return publisher
+        raise ISBNError(f"Could not find the Publisher of ISBN {self.source}.")
