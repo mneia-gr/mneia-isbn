@@ -1,15 +1,14 @@
 #!/usr/bin/env python
 
-import json
 import sys
 import xml.etree.ElementTree  # nosec
-from collections import defaultdict
 from pathlib import Path
 from typing import Any, Dict
 
 import defusedxml.ElementTree
+from black import FileMode, format_str
 
-ranges: Dict[str, Dict[str, Any]] = defaultdict(dict)
+ranges: Dict[str, Dict[str, Any]] = {}
 
 tree = defusedxml.ElementTree.parse("./src/data/ranges.xml")
 root = tree.getroot()
@@ -24,7 +23,7 @@ for ean_ucc_prefix in ean_ucc_prefixes:
         sys.exit("Something went wrong: Could not parse EAN.UCC Prefix.")
     if prefix.text is None:
         sys.exit("Something went wrong: EAN.UCC Prefix is None")
-    ranges[prefix.text] = defaultdict(dict)
+    ranges[prefix.text] = {}
 
 registration_groups = root.find("RegistrationGroups")
 if not isinstance(registration_groups, xml.etree.ElementTree.Element):
@@ -37,7 +36,7 @@ for registration_group in registration_groups:
     if registration_group_prefix.text is None:
         sys.exit("Something went wrong: RegistrationGroup Prefix is None.")
     prefix_id, group = registration_group_prefix.text.split("-")
-    ranges[prefix_id][group] = defaultdict(dict)
+    ranges[prefix_id][group] = {}
 
     agency = registration_group.find("Agency")
     if not isinstance(agency, xml.etree.ElementTree.Element):
@@ -67,5 +66,10 @@ for registration_group in registration_groups:
         rule_min, rule_max = rule_range.text.split("-")
         ranges[prefix_id][group]["ranges"].append([rule_min[:rule_length_int], rule_max[:rule_length_int]])
 
-output = Path("./src/data/ranges.json")
-output.write_text(json.dumps(ranges, indent=2, ensure_ascii=False))
+output = Path("./src/isbn/constants/ranges.py")
+output.write_text(
+    format_str(
+        f"from typing import Any, Dict\n\nRANGES: Dict[str, Dict[str, Any]] = {ranges}",
+        mode=FileMode(),
+    )
+)

@@ -72,6 +72,7 @@ line-length = 120
 
 [tool.flake8]
 max-line-length = 120
+exclude = ["src/isbn/constants/ranges.py"]  # ranges.py is automatically generated
 
 [tool.isort]
 multi_line_output = 3  # https://pycqa.github.io/isort/docs/configuration/options.html#multi-line-output

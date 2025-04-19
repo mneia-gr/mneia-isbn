@@ -1,10 +1,11 @@
 from typing import Optional
 
 from isbn.exceptions import ISBNInvalidOperation, ISBNValidationError
-from isbn.mixins import DundersMixin
+from isbn.mixins import DundersMixin, PartsMixin
+from isbn.utils.check_digit import calculate_isbn10_check_digit, calculate_isbn13_check_digit
 
 
-class ISBN(DundersMixin):
+class ISBN(DundersMixin, PartsMixin):
     def __init__(self, source: str):
         self._source: str = self.clean(source)
         self._is_valid: Optional[bool] = None
@@ -33,17 +34,12 @@ class ISBN(DundersMixin):
         self._source = _value
 
     @property
-    def prefix(self) -> str:
-        if self._prefix is None:
-            self._prefix = "978" if len(self) == 10 else self.source[:3]
-        return self._prefix
-
-    # @property
-    # def as_isbn13(self) -> str:
-    #     """
-    #     TODO: Commented out for now, this needs to recalculate the check digit if "978" is prefixed to an ISBN10.
-    #     """
-    #     return self.source if len(self) == 13 else f"978{self.source}"
+    def as_isbn13(self) -> str:
+        if len(self) == 13:
+            return self.source
+        _as_isbn13 = f"978{self.source}"
+        _as_isbn13 = _as_isbn13[:-1] + calculate_isbn13_check_digit(_as_isbn13)
+        return _as_isbn13
 
     @property
     def is_valid(self) -> bool:
@@ -77,36 +73,7 @@ class ISBN(DundersMixin):
 
     def calculate_check_digit(self) -> str:
         if len(self) == 10:
-            return self.calculate_isbn10_check_digit()
+            return calculate_isbn10_check_digit(self.source)
         if len(self) == 13:
-            return self.calculate_isbn13_check_digit()
+            return calculate_isbn13_check_digit(self.source)
         raise ISBNInvalidOperation(f"The length of {self.source} is neither 10 nor 13, got length {len(self)}.")
-
-    def calculate_isbn10_check_digit(self) -> str:
-        """
-        The check digit in an ISBN10 is whatever number needs to be added to the sum of the products of the first 9
-        digits by their weight, so that the total is a multiple of 11. The weight of digits starts from 10 and declines
-        by 1 for each subsequent digit. The letter "X" is used if the calculated check digit is 10.
-        """
-        if len(self) != 10:
-            raise ISBNInvalidOperation(
-                f"Cannot calculate check digit for ISBN10 because {self.source} is not 10 digits long."
-            )
-        sum_of_weighted_digits = sum([int(digit) * (10 - index) for index, digit in enumerate(self.source[:-1])])
-        check_digit = (11 - sum_of_weighted_digits % 11) % 11
-        return str(check_digit) if check_digit != 10 else "X"
-
-    def calculate_isbn13_check_digit(self) -> str:
-        """
-        The check digit in an ISBN13 is whatever number needs to be added to the sum of the products of the first 12
-        digits by their weight, so that the total is a multiple of 10. The weight of digits is swaps between 1 and 3,
-        i.e. 1 for digits in odd positions in the ISBN and 3 for digits in even positions in the ISBN.
-        """
-        if len(self) != 13:
-            raise ISBNInvalidOperation(
-                f"Cannot calculate check digit for ISBN13 because {self.source} is not 13 digits long."
-            )
-        sum_of_weighted_digits = sum([int(digit) for digit in self.source[:-1:2]]) + sum(
-            [int(digit) * 3 for digit in self.source[1:-1:2]]
-        )
-        return str((10 - sum_of_weighted_digits % 10) % 10)

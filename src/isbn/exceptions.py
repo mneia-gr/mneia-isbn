@@ -4,3 +4,7 @@ class ISBNValidationError(Exception):
 
 class ISBNInvalidOperation(Exception):
     pass
+
+
+class ISBNError(Exception):
+    pass
