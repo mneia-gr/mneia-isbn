@@ -1,6 +1,6 @@
 [project]
 name = "mneia-isbn"
-version = "0.0.1"
+version = "0.0.2"
 authors = [
     { name ="Marios Zindilis", email="marios@mneia.gr" },
 ]
