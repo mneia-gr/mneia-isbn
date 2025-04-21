@@ -114,6 +114,25 @@ Returns:
 }
 ```
 
+### Special Methods ###
+
+There are [dunder](https://www.pythonmorsels.com/every-dunder-method/) methods for converting an ISBN instance to a
+string, getting the ISBN length, and getting a representation in an internactive Python shell. Examples:
+
+```python
+isbn = ISBN("9789605031114")
+
+print(isbn)  # prints 9789605031114
+len(isbn)  # returns 13
+```
+
+In an interactive interpreter, like iPython:
+
+```python
+In [5]: isbn
+Out[5]: <ISBN: 9789605031114>
+```
+
 ### Utilities ###
 
 There are few utility functions that you can use. You can convert ISBN10 to ISBN13 and back:
@@ -157,3 +176,14 @@ validate("123456789012")  # raises ISBNValidationError: The length of 1234567890
 
 validate("9602367270")  # raises ISBNValidationError: The check digit of 9602367270 is not valid, expected check digit X.
 ```
+
+## Alternatives ##
+
+There are other Python libraries that handle ISBNs, which you can find by [searching PyPI for isbn][1]. Of those, the
+[pyisbn](https://pypi.org/project/pyisbn/) library looks good, but (a) I didn't know it existed before I wrote this
+library, and (b) my use case required breaking down an ISBN to its parts (prefix, group, publisher, article), which
+`pyisbn` didn't do.
+
+<!-- Links -->
+
+[1]: https://pypi.org/search/?q=isbn "Search PyPI for isbn"
