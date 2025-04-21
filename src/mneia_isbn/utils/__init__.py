@@ -1,5 +1,5 @@
-from isbn.utils.conversion import isbn10_to_isbn13, isbn13_to_isbn10
-from isbn.utils.validation import (
+from mneia_isbn.utils.conversion import isbn10_to_isbn13, isbn13_to_isbn10
+from mneia_isbn.utils.validation import (
     calculate_check_digit,
     calculate_isbn10_check_digit,
     calculate_isbn13_check_digit,

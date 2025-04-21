@@ -1,7 +1,7 @@
 import pytest
 
-from isbn import ISBNInvalidOperation
-from isbn.utils.conversion import isbn10_to_isbn13, isbn13_to_isbn10
+from mneia_isbn import ISBNInvalidOperation
+from mneia_isbn.utils.conversion import isbn10_to_isbn13, isbn13_to_isbn10
 
 
 @pytest.mark.parametrize(

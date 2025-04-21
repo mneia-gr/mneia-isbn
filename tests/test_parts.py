@@ -2,7 +2,7 @@ from unittest import mock
 
 import pytest
 
-from isbn import ISBN, ISBNError
+from mneia_isbn import ISBN, ISBNError
 
 
 @pytest.mark.parametrize(
@@ -80,7 +80,7 @@ def test_isbn_article(source, article):
     assert isbn.article == article
 
 
-@mock.patch("isbn.isbn.calculate_check_digit", return_value="foo")
+@mock.patch("mneia_isbn.isbn.calculate_check_digit", return_value="foo")
 def test_isbn_check_digit(mock_calculate_check_digit):
     isbn = ISBN("1234567890")
     assert isbn.check_digit == "foo"

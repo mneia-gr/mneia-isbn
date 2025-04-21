@@ -2,8 +2,8 @@ from unittest import mock
 
 import pytest
 
-from isbn.exceptions import ISBNInvalidOperation, ISBNValidationError
-from isbn.utils.validation import (
+from mneia_isbn.exceptions import ISBNInvalidOperation, ISBNValidationError
+from mneia_isbn.utils.validation import (
     calculate_check_digit,
     calculate_isbn10_check_digit,
     calculate_isbn13_check_digit,
@@ -18,8 +18,8 @@ from isbn.utils.validation import (
         ("1234567890123"),  # 13 digits long
     ],
 )
-@mock.patch("isbn.utils.validation.calculate_isbn13_check_digit", return_value="foo")
-@mock.patch("isbn.utils.validation.calculate_isbn10_check_digit", return_value="bar")
+@mock.patch("mneia_isbn.utils.validation.calculate_isbn13_check_digit", return_value="foo")
+@mock.patch("mneia_isbn.utils.validation.calculate_isbn10_check_digit", return_value="bar")
 def test_calculate_check_digit(mock_calculate_isbn10_check_digit, mock_calculate_isbn13_check_digit, source):
     check_digit = calculate_check_digit(source)
     if len(source) == 10:
@@ -95,7 +95,7 @@ def test_validate_fails_for_length():
     assert str(exc.value) == "The length of 123 is neither 10 nor 13, got length 3."
 
 
-@mock.patch("isbn.utils.validation.calculate_check_digit", return_value="A")
+@mock.patch("mneia_isbn.utils.validation.calculate_check_digit", return_value="A")
 def test_validate_fails_for_check_digit(mock_calculate_check_digit):
     with pytest.raises(ISBNValidationError) as exc:
         validate("1234567890")

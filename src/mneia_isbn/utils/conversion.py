@@ -1,5 +1,5 @@
-from isbn import ISBNInvalidOperation
-from isbn.utils.validation import calculate_isbn10_check_digit, calculate_isbn13_check_digit
+from mneia_isbn import ISBNInvalidOperation
+from mneia_isbn.utils.validation import calculate_isbn10_check_digit, calculate_isbn13_check_digit
 
 
 def isbn10_to_isbn13(source: str) -> str:

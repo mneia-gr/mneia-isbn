@@ -1,9 +1,9 @@
 from unittest import mock
 
-from isbn import ISBN, ISBNInvalidOperation
+from mneia_isbn import ISBN, ISBNInvalidOperation
 
 
-@mock.patch("isbn.isbn.isbn10_to_isbn13", return_value="foo")
+@mock.patch("mneia_isbn.isbn.isbn10_to_isbn13", return_value="foo")
 def test_as_isbn13(mock_isbn10_to_isbn13):
     isbn = ISBN("bar")
     as_isbn13 = isbn.as_isbn13
@@ -11,7 +11,7 @@ def test_as_isbn13(mock_isbn10_to_isbn13):
     assert as_isbn13 == "foo"
 
 
-@mock.patch("isbn.isbn.isbn13_to_isbn10", return_value="foo")
+@mock.patch("mneia_isbn.isbn.isbn13_to_isbn10", return_value="foo")
 def test_as_isbn10(mock_isbn13_to_isbn):
     isbn = ISBN("bar")
     as_isbn10 = isbn.as_isbn10
@@ -19,7 +19,7 @@ def test_as_isbn10(mock_isbn13_to_isbn):
     assert as_isbn10 == "foo"
 
 
-@mock.patch("isbn.isbn.isbn13_to_isbn10", side_effect=ISBNInvalidOperation)
+@mock.patch("mneia_isbn.isbn.isbn13_to_isbn10", side_effect=ISBNInvalidOperation)
 def test_as_isbn10_raises(mock_isbn13_to_isbn):
     isbn = ISBN("bar")
     as_isbn10 = isbn.as_isbn10

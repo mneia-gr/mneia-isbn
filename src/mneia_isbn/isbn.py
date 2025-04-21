@@ -1,8 +1,8 @@
 from typing import Dict, Optional
 
-from isbn.constants.ranges import RANGES
-from isbn.exceptions import ISBNError, ISBNInvalidOperation, ISBNValidationError
-from isbn.utils import calculate_check_digit, clean, isbn10_to_isbn13, isbn13_to_isbn10, validate
+from mneia_isbn.constants.ranges import RANGES
+from mneia_isbn.exceptions import ISBNError, ISBNInvalidOperation, ISBNValidationError
+from mneia_isbn.utils import calculate_check_digit, clean, isbn10_to_isbn13, isbn13_to_isbn10, validate
 
 
 class ISBN:

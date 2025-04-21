@@ -1,4 +1,4 @@
-from isbn.utils import clean
+from mneia_isbn.utils import clean
 
 
 def test_clean():

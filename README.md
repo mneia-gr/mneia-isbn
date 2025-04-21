@@ -1,6 +1,6 @@
-# ISBN #
+# Mneia ISBN #
 
-**isbn** is a collection of tools for working with International Standard Book Numbers in Python. It can validate,
+**Mneia ISBN** is a collection of tools for working with International Standard Book Numbers in Python. It can validate,
 hyphenate, and convert ISBNs between formats.
 
 This library is inspired by, and partially ported from, the [isbn3](https://github.com/inventaire/isbn3) Javascript
@@ -12,7 +12,7 @@ building, testing, and parsing XML, but none of those are needed for runtime, no
 Import and create an ISBN instance:
 
 ```python
-from isbn import ISBN
+from mneia_isbn import ISBN
 
 isbn = ISBN("9789605031114")
 ```
@@ -138,7 +138,7 @@ Out[5]: <ISBN: 9789605031114>
 There are few utility functions that you can use. You can convert ISBN10 to ISBN13 and back:
 
 ```python
-from isbn.utils import isbn10_to_isbn13, isbn13_to_isbn10
+from mneia_isbn.utils import isbn10_to_isbn13, isbn13_to_isbn10
 
 isbn10_to_isbn13("960236727X")  # returns: '9789602367278'
 
@@ -150,7 +150,7 @@ isbn13_to_isbn10("9798531132178")  # raises: ISBNInvalidOperation: Cannot conver
 You can calculate check digits:
 
 ```python
-from isbn.utils import calculate_check_digit, calculate_isbn10_check_digit, calculate_isbn13_check_digit
+from mneia_isbn.utils import calculate_check_digit, calculate_isbn10_check_digit, calculate_isbn13_check_digit
 
 calculate_check_digit("979853113217?")  # returns '8'
 
@@ -166,7 +166,7 @@ calculate_isbn13_check_digit("123456789012")  # raises ISBNInvalidOperation: Can
 Finally, you can validate an ISBN. This checks the length of the input, and the check digit:
 
 ```python
-from isbn.utils import validate
+from mneia_isbn.utils import validate
 
 validate("960236727X")  # returns None, which means there is no validation issue
 

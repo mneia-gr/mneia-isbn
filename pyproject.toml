@@ -1,5 +1,5 @@
 [project]
-name = "isbn"
+name = "mneia-isbn"
 version = "0.0.1"
 authors = [
     { name ="Marios Zindilis", email="marios@mneia.gr" },
@@ -10,7 +10,7 @@ requires-python = ">=3.9"
 
 # all possible classifiers: https://pypi.org/classifiers/
 classifiers = [
-    "Development Status :: 2 - Pre-Alpha",
+    "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
@@ -22,11 +22,11 @@ classifiers = [
 ]
 license = "MIT"
 license-files = ["LICENSE"]
-keywords = ["isbn", "books"]
+keywords = ["isbn", "isbn10", "isbn13", "books"]
 
 [project.urls]
-homepage = "https://github.com/mneia-gr/isbn"
-issues = "https://github.com/mneia-gr/isbn/issues"
+homepage = "https://github.com/mneia-gr/mneia-isbn"
+issues = "https://github.com/mneia-gr/mneia-isbn/issues"
 
 [dependency-groups]
 # Note that `pip` will start supporting `dependency-groups` from version 25.1 and onwards. Last checked 2025-03-30, this
@@ -72,7 +72,7 @@ line-length = 120
 
 [tool.flake8]
 max-line-length = 120
-exclude = ["src/isbn/constants/ranges.py"]  # ranges.py is automatically generated
+exclude = ["src/mneia_isbn/constants/ranges.py"]  # don't lint ranges.py, it is automatically generated
 
 [tool.isort]
 multi_line_output = 3  # https://pycqa.github.io/isort/docs/configuration/options.html#multi-line-output

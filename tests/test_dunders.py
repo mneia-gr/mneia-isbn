@@ -1,4 +1,4 @@
-from isbn import ISBN
+from mneia_isbn import ISBN
 
 
 def test_isbn_str():

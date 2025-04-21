@@ -1,4 +1,4 @@
-from isbn.exceptions import ISBNInvalidOperation, ISBNValidationError
+from mneia_isbn.exceptions import ISBNInvalidOperation, ISBNValidationError
 
 
 def calculate_check_digit(source: str) -> str:
