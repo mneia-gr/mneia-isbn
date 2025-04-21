@@ -1,61 +1,132 @@
-from typing import Optional
+from typing import Dict, Optional
 
-from isbn.exceptions import ISBNInvalidOperation, ISBNValidationError
-from isbn.mixins import DundersMixin, PartsMixin, PresentationMixin
+from isbn.constants.ranges import RANGES
+from isbn.exceptions import ISBNError, ISBNInvalidOperation, ISBNValidationError
+from isbn.utils import calculate_check_digit, clean, isbn10_to_isbn13, isbn13_to_isbn10, validate
 
 
-class ISBN(DundersMixin, PresentationMixin, PartsMixin):
+class ISBN:
     def __init__(self, source: str):
-        self._source: str = self.clean(source)
-        self._is_valid: Optional[bool] = None
+        self.source: str = clean(source)
 
-    @property
-    def source(self) -> str:
-        """
-        Getter for the `_source` property.
-        """
-        return self._source
+    def __str__(self) -> str:
+        return self.source
 
-    @source.setter
-    def source(self, value: str) -> None:
-        """
-        Setter for the `source` property. When we set the `source`, we need to invalidate some cached variables that may
-        have been previously calculated.
+    def __repr__(self) -> str:
+        return f"<ISBN: {self.source}>"
 
-        Set validity to `None` when changing the value of `source`. This is fairly shallow, because nothing stops the
-        user from setting `_is_valid` to anything and bypassing this invalidation. But who does that anyway... right?
-        """
-        _value = self.clean(value)
-        if _value != self._source:
-            self._is_valid = None
-        self._source = _value
+    def __len__(self) -> int:
+        return len(self.source)
 
     @property
     def is_valid(self) -> bool:
-        if self._is_valid is None:
-            try:
-                self.validate()
-            except ISBNValidationError:
-                self._is_valid = False
-            else:
-                self._is_valid = True
-        return self._is_valid
+        try:
+            validate(self.source)
+        except ISBNValidationError:
+            return False
+        return True
 
-    @is_valid.setter
-    def is_valid(self, _: bool) -> None:
-        raise ISBNInvalidOperation("'is_valid' is a read-only property, it cannot be set")
-
-    def clean(self, source: str) -> str:
-        """Removes whitespace and dashes from the input, and converts it to uppercase."""
-        _source = [character for character in source if not character.isspace()]  # remove spaces and tabs
-        _source = [character for character in _source if not character == "-"]  # remove hyphenation
-        return "".join(_source).upper()
-
-    def validate(self) -> None:
+    @property
+    def prefix(self) -> Optional[str]:
         """
-        TODO: Wire the "calculate_isbn" method here.
+        Returns the ISBN prefix. In ISBN13s, the prefix are the first 3 digits. ISBN10s don't have a prefix.
         """
-        if len(self.source) not in [10, 13]:
-            raise ISBNValidationError(
-                f"The length of {self.source} is neither 10 nor 13, got length {len(self.source)}."
-            )
+        return self.source[:3] if len(self) == 13 else None
+
+    @property
+    def group(self) -> str:
+        prefix = self.prefix or "978"  # use 978 as default for ISBN10
+        rest_after_prefix = self.source if len(self) == 10 else self.source[3:]
+        for group in RANGES[prefix]:
+            if rest_after_prefix.startswith(group):
+                return group
+        raise ISBNError(f"Could not find the Group of ISBN {self.source}.")
+
+    @property
+    def group_name(self) -> str:
+        prefix = self.prefix or "978"
+        return str(RANGES[prefix][self.group]["name"])
+
+    @property
+    def publisher(self) -> str:
+        prefix = self.prefix or "978"  # use 978 as default for ISBN10
+        length_before_publisher = len(self.group) if self.prefix is None else len(self.group) + len(self.prefix)
+        rest_after_group = self.source[length_before_publisher:]
+        publisher_ranges = RANGES[prefix][self.group]["ranges"]
+        for publisher_range in publisher_ranges:
+            publisher_min, publisher_max = publisher_range
+            publisher = rest_after_group[: len(publisher_min)]
+            if int(publisher) in range(int(publisher_min), int(publisher_max) + 1):
+                return publisher
+        raise ISBNError(f"Could not find the Publisher of ISBN {self.source}.")
+
+    @property
+    def article(self) -> str:
+        length_before_article = len(self.group) + len(self.publisher)
+        length_before_article = length_before_article if len(self) == 10 else length_before_article + 3
+        return self.source[length_before_article:-1]
+
+    @property
+    def check_digit(self) -> str:
+        return calculate_check_digit(self.source)
+
+    @property
+    def is_isbn10(self) -> bool:
+        return len(self) == 10
+
+    @property
+    def is_isbn13(self) -> bool:
+        return len(self) == 13
+
+    @property
+    def as_isbn10(self) -> Optional[str]:
+        try:
+            return isbn13_to_isbn10(self.source)
+        except ISBNInvalidOperation:
+            return None
+
+    @property
+    def as_isbn13(self) -> str:
+        return isbn10_to_isbn13(self.source)
+
+    @property
+    def as_isbn10_hyphenated(self) -> Optional[str]:
+        return None if self.as_isbn10 is None else f"{self.group}-{self.publisher}-{self.article}-{self.as_isbn10[-1]}"
+
+    @property
+    def as_isbn13_hyphenated(self) -> str:
+        return f"{self.prefix or '978'}-{self.group}-{self.publisher}-{self.article}-{self.as_isbn13[-1]}"
+
+    @property
+    def hyphenated(self) -> Optional[str]:
+        return self.as_isbn10_hyphenated if self.is_isbn10 else self.as_isbn13_hyphenated
+
+    @property
+    def check_digit_10(self) -> Optional[str]:
+        return None if self.as_isbn10 is None else self.as_isbn10[-1]
+
+    @property
+    def check_digit_13(self) -> str:
+        return self.as_isbn13[-1]
+
+    @property
+    def as_dict(self) -> Dict[str, Optional[str | bool]]:
+        return {
+            "group": self.group,
+            "group_name": self.group_name,
+            "publisher": self.publisher,
+            "article": self.article,
+            "check_digit": self.check_digit,
+            "check_digit_10": self.check_digit_10,
+            "check_digit_13": self.check_digit_13,
+            "source": self.source,
+            "prefix": self.prefix,
+            "hyphenated": self.hyphenated,
+            "is_isbn10": self.is_isbn10,
+            "is_isbn13": self.is_isbn13,
+            "as_isbn10": self.as_isbn10,
+            "as_isbn13": self.as_isbn13,
+            "as_isbn10_hyphenated": self.as_isbn10_hyphenated,
+            "as_isbn13_hyphenated": self.as_isbn13_hyphenated,
+            "is_valid": self.is_valid,
+        }
