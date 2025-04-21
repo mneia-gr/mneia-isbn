@@ -2,7 +2,7 @@
 
 ## v0.0.2 ##
 
-Added equality check with `__eq__`.
+Renamed package to make PyPI happy. Added equality check with `__eq__`.
 
 ## v0.0.1 ##
 
