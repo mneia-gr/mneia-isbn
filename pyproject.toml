@@ -26,7 +26,9 @@ keywords = ["isbn", "isbn10", "isbn13", "books"]
 
 [project.urls]
 homepage = "https://github.com/mneia-gr/mneia-isbn"
+repository = "https://github.com/mneia-gr/mneia-isbn"
 issues = "https://github.com/mneia-gr/mneia-isbn/issues"
+changelog = "https://github.com/mneia-gr/mneia-isbn/CHANGELOG.md"
 
 [dependency-groups]
 # Note that `pip` will start supporting `dependency-groups` from version 25.1 and onwards. Last checked 2025-03-30, this

@@ -1,4 +1,4 @@
-from typing import Dict, Optional
+from typing import Any, Dict, Optional
 
 from mneia_isbn.constants.ranges import RANGES
 from mneia_isbn.exceptions import ISBNError, ISBNInvalidOperation, ISBNValidationError
@@ -17,6 +17,11 @@ class ISBN:
 
     def __len__(self) -> int:
         return len(self.source)
+
+    def __eq__(self, other: Any) -> bool:
+        if not isinstance(other, ISBN):
+            return False
+        return self.as_isbn13 == other.as_isbn13
 
     @property
     def is_valid(self) -> bool:

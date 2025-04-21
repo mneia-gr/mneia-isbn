@@ -117,7 +117,8 @@ Returns:
 ### Special Methods ###
 
 There are [dunder](https://www.pythonmorsels.com/every-dunder-method/) methods for converting an ISBN instance to a
-string, getting the ISBN length, and getting a representation in an internactive Python shell. Examples:
+string, getting the ISBN length, getting a representation in an internactive Python shell, and checking for ISBN
+equality. Examples:
 
 ```python
 isbn = ISBN("9789605031114")
@@ -131,6 +132,13 @@ In an interactive interpreter, like iPython:
 ```python
 In [5]: isbn
 Out[5]: <ISBN: 9789605031114>
+```
+
+In equality checks, an ISBN10 and an ISBN13 that are conversions of each other are considered equal:
+
+```python
+ISBN("1781682135") == ISBN("1781682135")  # True
+ISBN("1781682135") == ISBN("9781781682135")  # also True
 ```
 
 ### Utilities ###
