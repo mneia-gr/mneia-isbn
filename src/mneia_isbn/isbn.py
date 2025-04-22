@@ -1,7 +1,13 @@
 from typing import Any, Dict, Optional
 
 from mneia_isbn.constants.ranges import RANGES
-from mneia_isbn.exceptions import ISBNError, ISBNInvalidOperation, ISBNValidationError
+from mneia_isbn.exceptions import (
+    ISBNError,
+    ISBNInvalidCheckDigit,
+    ISBNInvalidLength,
+    ISBNInvalidOperation,
+    ISBNInvalidPrefix,
+)
 from mneia_isbn.utils import calculate_check_digit, clean, isbn10_to_isbn13, isbn13_to_isbn10, validate
 
 
@@ -27,7 +33,7 @@ class ISBN:
     def is_valid(self) -> bool:
         try:
             validate(self.source)
-        except ISBNValidationError:
+        except (ISBNInvalidCheckDigit, ISBNInvalidLength, ISBNInvalidPrefix):
             return False
         return True
 

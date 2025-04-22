@@ -1,4 +1,4 @@
-from mneia_isbn.exceptions import ISBNInvalidOperation, ISBNValidationError
+from mneia_isbn.exceptions import ISBNInvalidCheckDigit, ISBNInvalidLength, ISBNInvalidOperation, ISBNInvalidPrefix
 
 
 def calculate_check_digit(source: str) -> str:
@@ -48,7 +48,11 @@ def validate(source: str) -> None:
     Validates the length and check digit of an ISBN.
     """
     if len(source) not in [10, 13]:
-        raise ISBNValidationError(f"The length of {source} is neither 10 nor 13, got length {len(source)}.")
+        raise ISBNInvalidLength(f"The length of {source} is neither 10 nor 13, got length {len(source)}.")
+
+    if len(source) == 13 and source[:3] not in ["978", "979"]:
+        raise ISBNInvalidPrefix("The prefix of an ISBN13 must be either 978 or 979.")
+
     check_digit = calculate_check_digit(source)
     if source[-1] != check_digit:
-        raise ISBNValidationError(f"The check digit of {source} is not valid, expected check digit {check_digit}.")
+        raise ISBNInvalidCheckDigit(f"The check digit of {source} is not valid, expected check digit {check_digit}.")

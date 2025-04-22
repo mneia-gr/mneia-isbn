@@ -1,6 +1,8 @@
 from unittest import mock
 
-from mneia_isbn import ISBN, ISBNValidationError
+import pytest
+
+from mneia_isbn import ISBN, ISBNInvalidCheckDigit, ISBNInvalidLength, ISBNInvalidPrefix
 
 
 @mock.patch("mneia_isbn.isbn.clean", return_value="foo")
@@ -20,8 +22,18 @@ def test_isbn_is_valid(mock_validate):
     mock_validate.assert_called_once_with("FOO")
 
 
-@mock.patch("mneia_isbn.isbn.validate", side_effect=ISBNValidationError)
-def test_isbn_is_not_valid(mock_validate):
+@pytest.mark.parametrize(
+    "side_effect",
+    [
+        (ISBNInvalidCheckDigit),
+        (ISBNInvalidLength),
+        (ISBNInvalidPrefix),
+    ],
+)
+@mock.patch("mneia_isbn.isbn.validate")
+def test_isbn_is_not_valid(mock_validate, side_effect):
+    mock_validate.side_effect = side_effect
+
     isbn = ISBN("foo")
     assert isbn.is_valid is False
     mock_validate.assert_called_once_with("FOO")

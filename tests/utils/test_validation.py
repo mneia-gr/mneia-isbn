@@ -2,7 +2,7 @@ from unittest import mock
 
 import pytest
 
-from mneia_isbn.exceptions import ISBNInvalidOperation, ISBNValidationError
+from mneia_isbn.exceptions import ISBNInvalidCheckDigit, ISBNInvalidLength, ISBNInvalidOperation, ISBNInvalidPrefix
 from mneia_isbn.utils.validation import (
     calculate_check_digit,
     calculate_isbn10_check_digit,
@@ -90,14 +90,20 @@ def test_calculate_isbn13_check_digit_raises():
 
 
 def test_validate_fails_for_length():
-    with pytest.raises(ISBNValidationError) as exc:
+    with pytest.raises(ISBNInvalidLength) as exc:
         validate("123")
     assert str(exc.value) == "The length of 123 is neither 10 nor 13, got length 3."
 
 
 @mock.patch("mneia_isbn.utils.validation.calculate_check_digit", return_value="A")
 def test_validate_fails_for_check_digit(mock_calculate_check_digit):
-    with pytest.raises(ISBNValidationError) as exc:
+    with pytest.raises(ISBNInvalidCheckDigit) as exc:
         validate("1234567890")
     assert str(exc.value) == "The check digit of 1234567890 is not valid, expected check digit A."
     mock_calculate_check_digit.assert_called_once_with("1234567890")
+
+
+def test_validate_fails_for_prefix():
+    with pytest.raises(ISBNInvalidPrefix) as exc:
+        validate("1234567890123")
+    assert str(exc.value) == "The prefix of an ISBN13 must be either 978 or 979."

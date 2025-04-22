@@ -180,9 +180,11 @@ validate("960236727X")  # returns None, which means there is no validation issue
 
 validate("9789602367278")  # returns None, which means there is no validation issue
 
-validate("123456789012")  # raises ISBNValidationError: The length of 123456789012 is neither 10 nor 13, got length 12.
+validate("123456789012")  # raises ISBNInvalidLength: The length of 123456789012 is neither 10 nor 13, got length 12.
 
-validate("9602367270")  # raises ISBNValidationError: The check digit of 9602367270 is not valid, expected check digit X.
+validate("1234567890123")  # raises ISBNInvalidPrefix: The prefix of an ISBN13 must be either 978 or 979.
+
+validate("9602367270")  # raises ISBNInvalidCheckDigit: The check digit of 9602367270 is not valid, expected check digit X.
 ```
 
 ## Alternatives ##
@@ -190,7 +192,11 @@ validate("9602367270")  # raises ISBNValidationError: The check digit of 9602367
 There are other Python libraries that handle ISBNs, which you can find by [searching PyPI for isbn][1]. Of those, the
 [pyisbn](https://pypi.org/project/pyisbn/) library looks good, but (a) I didn't know it existed before I wrote this
 library, and (b) my use case required breaking down an ISBN to its parts (prefix, group, publisher, article), which
-`pyisbn` didn't do.
+`pyisbn` didn't do (I think). Other alternatives:
+
+*   [isbn_hyphenate](https://github.com/TorKlingberg/isbn_hyphenate) can hyphenate an ISBN based on range data from ISBN
+    International, as can Mneia ISBN. It has not been updated since 2016.
+
 
 <!-- Links -->
 
