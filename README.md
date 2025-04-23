@@ -1,7 +1,7 @@
 # Mneia ISBN #
 
-**Mneia ISBN** is a collection of tools for working with International Standard Book Numbers in Python. It can validate,
-hyphenate, and convert ISBNs between formats.
+**Mneia ISBN** is a collection of tools for working with International Standard Book Numbers in Python. It can split an
+ISBN to its parts (prefix, group, publisher, item, check digit), validate, hyphenate, and convert ISBNs between formats.
 
 This library is inspired by, and partially ported from, the [isbn3](https://github.com/inventaire/isbn3) Javascript
 library. This library has no runtime dependencies outside of the Python standard library. It has dependencies for
