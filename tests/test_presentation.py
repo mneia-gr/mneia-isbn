@@ -109,3 +109,13 @@ def test_as_isbn10_hyphenated():
 def test_as_isbn13_hyphenated():
     isbn = ISBN("9789607073013")
     assert isbn.as_isbn13_hyphenated == "978-960-7073-01-3"
+
+
+def test_publisher_prefix():
+    isbn = ISBN("9798531132178")
+    assert isbn.publisher_prefix == "979-8-5311"
+
+
+def test_publisher_name():
+    isbn = ISBN("9607073010")
+    assert isbn.publisher_name == "Εκδόσεις Opera"

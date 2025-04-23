@@ -68,7 +68,7 @@ for registration_group in registration_groups:
         rule_min, rule_max = rule_range.text.split("-")
         ranges[prefix_id][group]["ranges"].append([rule_min[:rule_length_int], rule_max[:rule_length_int]])
 
-output = Path("./src/isbn/constants/ranges.py")
+output = Path("./src/mneia_isbn/constants/ranges.py")
 output.write_text(
     format_str(
         f"from typing import Any, Dict\n\nRANGES: Dict[str, Dict[str, Any]] = {ranges}",

@@ -1,6 +1,6 @@
 from typing import Any, Dict, Optional
 
-from mneia_isbn.constants.ranges import RANGES
+from mneia_isbn.constants import PUBLISHERS, RANGES
 from mneia_isbn.exceptions import (
     ISBNError,
     ISBNInvalidCheckDigit,
@@ -70,6 +70,19 @@ class ISBN:
             if int(publisher) in range(int(publisher_min), int(publisher_max) + 1):
                 return publisher
         raise ISBNError(f"Could not find the Publisher of ISBN {self.source}.")
+
+    @property
+    def publisher_prefix(self) -> str:
+        """
+        Use this prefix to search for the publisher in the Global Registry of Publishers:
+
+        https://grp.isbn-international.org/
+        """
+        return f"{self.prefix or '978'}-{self.group}-{self.publisher}"
+
+    @property
+    def publisher_name(self) -> str:
+        return PUBLISHERS[self.publisher_prefix]
 
     @property
     def article(self) -> str:

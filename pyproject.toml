@@ -71,10 +71,16 @@ addopts = "-vv --cov-report term-missing --cov . --cov-fail-under 100 --capture 
 
 [tool.black]
 line-length = 120
+# don't format publisher data, it's more readable in tabular format:
+extend-exclude = "src/mneia_isbn/constants/.*publishers.py"
 
 [tool.flake8]
 max-line-length = 120
-exclude = ["src/mneia_isbn/constants/ranges.py"]  # don't lint ranges.py, it is automatically generated
+exclude = [
+    "src/mneia_isbn/constants/ranges.py",  # don't lint ranges.py, it is automatically generated
+    "src/mneia_isbn/constants/_publishers.py",  # don't lint publisher.py, data is more readable in tabular format
+    "src/mneia_isbn/constants/publishers.py",  # don't lint publisher.py, data is more readable in tabular format
+]
 
 [tool.isort]
 multi_line_output = 3  # https://pycqa.github.io/isort/docs/configuration/options.html#multi-line-output

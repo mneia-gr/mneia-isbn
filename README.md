@@ -41,18 +41,28 @@ isbn.article  # returns '111'
 isbn.check_digit  # returns '4'
 ```
 
-You can also get the Group name, as defined by ISBN International:
+You can also get the Group name and the Publisher Prefix, as defined by ISBN International:
 
 ```python
 isbn.group_name  # returns 'Greece'
+isbn.publisher_prefix  # returns '978-960-503'
 ```
 
-The Check Digit is available for both the ISBN10 and ISBN13 formats of an ISBN:
+The Publisher Prefix can be used to look up the Publisher in the [Global Register of Publishers][2]. The Check Digit is
+available for both the ISBN10 and ISBN13 formats of an ISBN:
 
 ```python
 isbn = ISBN("9789605031114")
 isbn.check_digit_10  # returns '6'
 isbn.check_digit_13  # returns '4'
+```
+
+There is also a way to get the Publisher Name, by looking up the Publisher Prefix in a fixed mapping of prefixes to
+names. This feature cannot be complete, because there is no complete list of publishers that I could find. Example:
+
+```python
+isbn = ISBN("8772891343")
+isbn.publisher_name  # returns 'Museum Tusculanum Press'
 ```
 
 #### Conversions ####
@@ -201,3 +211,4 @@ library, and (b) my use case required breaking down an ISBN to its parts (prefix
 <!-- Links -->
 
 [1]: https://pypi.org/search/?q=isbn "Search PyPI for isbn"
+[2]: https://grp.isbn-international.org/ "Global Register of Publishers"
