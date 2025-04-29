@@ -204,6 +204,8 @@ There are other Python libraries that handle ISBNs, which you can find by [searc
 library, and (b) my use case required breaking down an ISBN to its parts (prefix, group, publisher, article), which
 `pyisbn` didn't do (I think). Other alternatives:
 
+*   [isbnlib](https://github.com/xlcnd/isbnlib) is very powerful, and can retrieve data about an ISBN from several
+    public APIs.
 *   [isbn_hyphenate](https://github.com/TorKlingberg/isbn_hyphenate) can hyphenate an ISBN based on range data from ISBN
     International, as can Mneia ISBN. It has not been updated since 2016.
 

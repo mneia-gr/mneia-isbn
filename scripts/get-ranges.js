@@ -2,6 +2,8 @@
 
 // Retrieves range information from ISBN International and stores it as an XML file.
 // Shamelessly copied from https://github.com/inventaire/isbn3/blob/main/scripts/update_groups.js and adapted
+//
+// For manual download, visit: https://www.isbn-international.org/range_file_generation
 
 const fs = require('fs')
 const { promisify } = require('util')
