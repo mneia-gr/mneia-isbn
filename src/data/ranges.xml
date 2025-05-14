@@ -17,8 +17,8 @@
 ]>
 <ISBNRangeMessage>
   <MessageSource>International ISBN Agency</MessageSource>
-  <MessageSerialNumber>d9089ca2-b117-4c1c-a0dc-0d929b7b4652</MessageSerialNumber>
-  <MessageDate>Tue, 22 Apr 2025 15:49:09 BST</MessageDate>
+  <MessageSerialNumber>3f39b2dc-63e4-4e41-896d-de4d09a8cc81</MessageSerialNumber>
+  <MessageDate>Wed, 14 May 2025 05:28:26 BST</MessageDate>
   <EAN.UCCPrefixes>
     <EAN.UCC>
       <Prefix>978</Prefix>
@@ -1093,12 +1093,16 @@
           <Length>5</Length>
         </Rule>
         <Rule>
-          <Range>5000000-5224999</Range>
+          <Range>5000000-5299999</Range>
           <Length>4</Length>
         </Rule>
         <Rule>
-          <Range>5225000-9999999</Range>
+          <Range>5300000-9899999</Range>
           <Length>0</Length>
+        </Rule>
+        <Rule>
+          <Range>9900000-9999999</Range>
+          <Length>5</Length>
         </Rule>
       </Rules>
     </Group>
@@ -8439,7 +8443,11 @@
           <Length>1</Length>
         </Rule>
         <Rule>
-          <Range>1000000-4999999</Range>
+          <Range>1000000-1099999</Range>
+          <Length>2</Length>
+        </Rule>
+        <Rule>
+          <Range>1100000-4999999</Range>
           <Length>0</Length>
         </Rule>
         <Rule>
@@ -8661,6 +8669,24 @@
         <Rule>
           <Range>9500000-9999999</Range>
           <Length>3</Length>
+        </Rule>
+      </Rules>
+    </Group>
+    <Group>
+      <Prefix>978-99998</Prefix>
+      <Agency>Namibia</Agency>
+      <Rules>
+        <Rule>
+          <Range>0000000-7999999</Range>
+          <Length>0</Length>
+        </Rule>
+        <Rule>
+          <Range>8000000-8999999</Range>
+          <Length>2</Length>
+        </Rule>
+        <Rule>
+          <Range>9000000-9999999</Range>
+          <Length>0</Length>
         </Rule>
       </Rules>
     </Group>
