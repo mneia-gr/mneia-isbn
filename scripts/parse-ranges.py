@@ -15,6 +15,9 @@ ranges: Dict[str, Dict[str, Any]] = {}
 tree = defusedxml.ElementTree.parse("./src/data/ranges.xml")
 root = tree.getroot()
 
+if root is None:
+    sys.exit("Something went wrong: Could not parse root element.")
+
 ean_ucc_prefixes = root.find("EAN.UCCPrefixes")
 if not isinstance(ean_ucc_prefixes, xml.etree.ElementTree.Element):
     sys.exit("Something went wrong: Could not parse EAN.UCCPrefixes.")
